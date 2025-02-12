@@ -1,0 +1,31 @@
+<html lang="en">
+    <%- include("./partials/header.ejs")  %>
+<body>
+    <header>
+        <a href="#"><img src="public/img/logo1.jpg" alt="company Logo" class="logo"></a>
+        <%- include('./partials/navpublic.ejs') %>
+    </header>
+    <div class="logcontainer">
+        <div class="section">
+            <h1>Login</h1>
+            <br>
+            <form action="/auth" method="post">
+                <input type="text" name="username" placeholder="User Name" id="username" required>
+                <input type="password" name="password" placeholder="Password" id="password" required>
+                <input type="submit" value="Login">
+            </form>
+        </div>
+    </div>
+    <br><br>
+    <div class="logcontainer">
+        <div class="section">
+            <h3><a href="/register">New Staff - Please Register</a></h3>
+            <br>
+            <% if (typeof success !== 'undefined') { %>
+                <h2>Hi <%= name %> You are <%= success %></h2>
+            <% } %>
+        </div>
+    </div>
+    <%- include("./partials/footer.ejs")  %>
+</body>
+</html>

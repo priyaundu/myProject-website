@@ -1,0 +1,38 @@
+<html lang="en">
+    <%- include("./partials/header.ejs")  %>
+<body>
+    <header>
+        <a href="#"><img src="public/img/logo1.jpg" alt="company Logo" class="logo"></a>
+        <%- include('./partials/navprivate.ejs') %>
+    </header>
+    <div class="container">
+        <div class="section2">
+            <%- include('./partials/menu.ejs') %>
+        </div>
+        <div class="section3">
+            <h1>Add Customer</h1>
+            <form action="/addCustomer" method="post">
+                <label for="name">Name:</label><br>
+                <input type="text" id="name" name="name" required placeholder="Name"><br><br>
+
+                <label for="address">Address:</label><br>
+                <input type="text" id="address" name="address" required placeholder="Address"><br><br>
+
+                <label for="phone">Phone No:</label><br>
+                <input type="tel" id="phone" name="phone" required placeholder="Phone No"><br><br>
+
+                <label for="email">eMail:</label><br>
+                <input type="email" id="email" name="email" required placeholder="eMail"><br><br>
+
+                <input type="submit" value="Add Customer">
+            </form>
+<% if (typeof success !== 'undefined') { %>
+    <br>
+    <h2><%= success %></h2>
+    <p>Customer Reference Number: <strong><%= cID %></strong></p>
+<% } %>
+        </div>
+    </div>
+    <%- include("./partials/footer.ejs")  %>
+</body>
+</html>

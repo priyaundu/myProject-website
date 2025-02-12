@@ -1,0 +1,23 @@
+<html lang="en">
+    <%- include("./partials/header.ejs")  %>
+<body>
+    <header>
+            <a href="#"><img src="public/img/logo1.jpg" alt="company Logo" class="logo"></a>
+        <%- include('./partials/navprivate.ejs') %>
+    </header>
+    <div class="container">
+        <div class="section section2">
+            <%- include('./partials/menu.ejs') %>
+        </div>
+        <div class="section section3">
+            <h2>Trouble Ticket Acknowledgement</h2>
+            <% if (typeof success !== 'undefined') { %>
+                <br>
+                <h2><%= success %></h2>
+                <p>Ticket Number: <strong><%= cID %>-<%= pID  %>-<%= fID %></strong></p>
+            <% } %>
+        </div>
+    </div>
+    <%- include("./partials/footer.ejs")  %>
+</body>
+</html>

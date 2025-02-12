@@ -1,0 +1,28 @@
+<html lang="en">
+    <%- include("./partials/header.ejs")  %>
+<body>
+    <header>
+        <a href="#"><img src="public/img/logo1.jpg" alt="company Logo" class="logo"></a>
+        <%- include('./partials/navpublic.ejs') %>
+    </header>
+    <div class="container">
+        <div class="section">
+            <h2>Section 1</h2>
+            <p>Content for Section 1 goes here.</p>
+        </div>
+    </div>
+    <div class="container">
+        <div class="section1">
+            <h2 class="center-heading">Wi-Fi Camera</h2>
+            <img src="public/img/wificamera.jpg" alt="Wi-Fi Camera" class="image center-image">
+            <p>Here is the note that you wanted to add to this section.</p>
+        </div>
+        <div class="section1">
+            <h2 class="center-heading">Wi-Fi Repeater</h2>
+            <img src="public/img/wifi_repeater.webp" alt="Wi-Fi Repeater" class="image center-image">
+            <p>Here is the note that you wanted to add to this section.</p>
+        </div>
+    </div>
+    <%- include("./partials/footer.ejs")  %>
+</body>
+</html>

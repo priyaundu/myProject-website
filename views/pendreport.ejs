@@ -1,0 +1,124 @@
+<html lang="en">
+    <%- include("./partials/header.ejs")  %>
+<body>
+    <header>
+        <a href="#"><img src="public/img/logo1.jpg" alt="company Logo" class="logo"></a>
+        <%- include('./partials/navprivate.ejs') %>
+    </header>
+    <div class="container">
+        <div class="section2">
+            <%- include('./partials/menu.ejs') %>
+        </div>
+        <div class="section3">
+            <h2>Ticket Status Report</h2>
+            <form action="/pending" method="post" class="button-container">  
+                <div>
+                    <label for="productType">Product Type:</label>
+                    <% if (proType && proType.length > 0) { %>  <select name="productType" id="productType">
+                            <% proType.forEach (product => { %>
+                                <option value="<%= product.type %>"><%= product.type %></option>
+                            <% }); %>
+                        </select>
+                    <% } %>
+                </div>
+    
+                <br><br>
+                <button type="submit" name="status" value="pending">List of Pending Tickets</button>
+                <button type="submit" name="status" value="closed">List of Closed Tickets</button>
+            </form>
+
+            <% if (results) {  
+                   var i=0; %>
+                    <h2 id="statusMsg">Status: <%= results && results[0] ? results[0].status : "unknown" %></h2>
+                    <h2>Product Type: <%= results[0].productType %></h2>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">T-ID</th>
+                        <th scope="col">C-ID</th>
+                        <th scope="col">P-ID</th>
+                        <th scope="col">Brand</th>
+                        <th scope="col">Model</th>
+                        <th scope="col">Report Date</th>
+                        <th scope="col">Description</th>
+                        
+
+
+                        <% if (results[0].status === "closed") { %>
+                            <th scope="col">Close Remark</th>
+                            <th scope="col">Close Date</th>
+                            <th scope="col">Days to Repair</th>
+                        <% } %>
+
+                        <% if (results[0].status === "pending") { %>
+                            <th scope="col">Pending Days</th>
+                        <% } %>
+
+                        </tr>
+                    </thead>
+                <% results.forEach(ticket => { 
+                    ticket.reportDate = new Date(ticket.reportDate); 
+                    var formattedDate1 = ticket.reportDate.getDate() + "/" + (ticket.reportDate.getMonth() + 1) + "/" + ticket.reportDate.getFullYear(); 
+
+                    ticket.closeDate = new Date(ticket.closeDate); 
+                    var formattedDate2 = ticket.closeDate.getDate() + "/" + (ticket.closeDate.getMonth() + 1) + "/" + ticket.closeDate.getFullYear(); 
+
+                    var repairDays = (ticket.closeDate - ticket.reportDate) / (1000 * 60 * 60 *24);
+
+                    var today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                
+                    var pendingDays = (today - ticket.reportDate) / (1000 * 60 * 60 *24);
+
+                    i += 1; %>
+                    <tbody>
+                        <tr>
+                          <th scope="row"><%= i %></th>
+                          <td><%= ticket.id %></td>
+                          <td><%= ticket.customerId %></td>
+                          <td><%= ticket.productId %></td>
+                          <td><%= ticket.brand %></td>
+                          <td><%= ticket.model %></td>
+                          <td><%= formattedDate1 %></td>
+                          <td><%= ticket.description %></td>
+                          
+
+
+                        <% if (ticket.status === "closed") { %>
+                            <td><%= ticket.closeRemark %></td> %>
+                            <td><%= formattedDate2 %></td>
+                            <td><%= repairDays %></td>
+                          <% } %>
+
+                          <% if (ticket.status === "pending") { %>
+                            <td><%= pendingDays %></td>
+                          <% } %>
+
+                        </tr>
+                    </tbody>
+                <% })%>
+                </table>
+                <h2>Number of Tickets: <%= i %></h2>
+            <% } %>
+        </div>
+    </div>
+    <%- include("./partials/footer.ejs")  %>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            var statusMsg = document.getElementById('statusMsg');
+            var statusText = '<%= results && results[0] ? results[0].status : "unknown" %>';
+
+            if (statusText === 'closed') {
+                statusMsg.style.color = 'green';
+            } 
+            if (statusText === 'pending') {
+                statusMsg.style.color = 'red';
+            } 
+        });
+    </script>
+
+</body>
+</html>

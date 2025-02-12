@@ -1,0 +1,39 @@
+<html lang="en">
+    <%- include("./partials/header.ejs")  %>
+<body>
+    <header>
+        <a href="#"><img src="public/img/logo1.jpg" alt="company Logo" class="logo"></a>
+        <%- include('./partials/navprivate.ejs') %> 
+    </header>
+    <div class="container">
+        <div class="section2">
+            <%- include('./partials/menu.ejs') %>
+        </div>
+        <div class="section3">
+            <h2>User Profile</h2>
+            <% if (results && results.length > 0) { %> 
+                
+                <table class="table">
+                    <thead>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><strong>Name</strong></td>
+                        <td><%= results[0].name %></td>
+                      </tr>
+                      <tr>
+                        <td><strong>Team</strong></td>
+                        <td><%= results[0].team %></td>
+                      </tr>
+                      <tr>
+                        <td><strong>eMail</strong></td>
+                        <td><%= results[0].email %></td>
+                      </tr>
+                    </tbody>
+                </table>  
+            <% }  %> 
+        </div>
+    </div>
+    <%- include("./partials/footer.ejs")  %>
+</body>
+</html>

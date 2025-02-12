@@ -1,0 +1,138 @@
+<html lang="en">
+    <%- include("./partials/header.ejs")  %>
+<body>
+    <header>
+        <a href="#"><img src="public/img/logo1.jpg" alt="company Logo" class="logo"></a>
+        <%- include('./partials/navprivate.ejs') %>
+    </header>
+    <div class="container">
+        <div class="section2">
+            <%- include('./partials/menu.ejs') %>
+        </div>
+        <div class="section3">
+            <h1>Trouble Ticket Search</h1>
+            <h1>Search Fault by Ticket Number:</h1>
+            <form action="/update" method="post">
+                <label for="customerID">Customer ID:</label>
+                <input type="text" id="customerID" name="customerID" required placeholder="Customer ID"><br><br>
+                <label for="productID">Product ID:</label>
+                <input type="text" id="productID" name="productID" required placeholder="Product ID"><br><br>
+                <label for="faultID">Fault ID:</label>
+                <input type="text" id="faultID" name="faultID" required placeholder="Fault ID"><br><br>
+                <button type="submit">Search Trouble Ticket</button>
+            </form>
+
+            <% if (results) 
+                {   
+                    var formattedDate1 = results.reportDate.getDate() + "/" + (results.reportDate.getMonth() + 1) + "/" + results.reportDate.getFullYear(); 
+                   
+                    var formattedDate2 = results.dateOfPurchase.getDate() + "/" + (results.dateOfPurchase.getMonth() + 1) + "/" + results.dateOfPurchase.getFullYear();
+                    %>
+                    
+                    <h2>Ticket Details:</h2>
+                    <table class="table">
+                        <tr>
+                            <th>Customer ID</th>
+                            <td><%= results.customerId %></td>
+                        </tr>
+                        <tr>
+                            <th>Product ID</th>
+                            <td><%= results.productId %></td>
+                        </tr>
+                        <tr>
+                            <th>Fault ID</th>
+                            <td><%= results.id %></td>
+                        </tr>
+                        <tr>
+                            <th>Date of Report</th>
+                            <td><%= formattedDate1 %></td>
+                        </tr>
+                        <tr>
+                            <th>Status</th>
+                            <td><%= results.status %></td>
+                        </tr>
+                        <tr>
+                            <th>Description</th>
+                            <td><%= results.description %></td>
+                        </tr>
+                    </table>
+                    
+                    <h2>Product Details:</h2>
+                    <table class="table">
+                        <tr>
+                            <th>Date of Purchase</th>
+                            <td><%= formattedDate2 %></td>
+                        </tr>
+                        <tr>
+                            <th>Type</th>
+                            <td><%= results.productType %></td>
+                        </tr>
+                        <tr>
+                            <th>Brand</th>
+                            <td><%= results.brand %></td>
+                        </tr>
+                        <tr>
+                            <th>Model</th>
+                            <td><%= results.model %></td>
+                        </tr>
+                        <tr>
+                            <th>Warranty Period</th>
+                            <td><%= results.warranty %> Year</td>
+                        </tr>
+                        <tr>
+                            <th>Serial Number</th>
+                            <td><%= results.serialNumber %></td>
+                        </tr>
+                    </table>
+
+                    <h2>Customer Details:</h2>
+                    <table class="table">
+                        <tr>
+                            <th>Customer Name</th>
+                            <td><%= results.name %></td>
+                        </tr>
+                        <tr>
+                            <th>Customer Address</th>
+                            <td><%= results.address %></td>
+                        </tr>
+                        <tr>
+                            <th>Customer Phone</th>
+                            <td><%= results.phone %></td>
+                        </tr>
+                        <tr>
+                            <th>Customer Email</th>
+                            <td><%= results.email %></td>
+                        </tr>
+                    </table>
+
+                    <% if (results.status === "pending" )
+                        {  %>
+
+                        <h2>Update Trouble Ticket</h2>
+                        <p>Ticket Closing Date: <span id="currentDate"></span></p>
+
+                        <form action="/closing" method="post">
+                            <input type="hidden" name="faultId" value="<%= results.id %>">
+                            <label for="closeRemark">Closing Remarks:</label>
+                            <br>
+                            <textarea id="closeRemark" name="closeRemark" rows="4" cols="50" required></textarea><br><br>
+                            <button type="submit">Close Ticket</button>
+                        </form>
+                    <% } 
+                    else { 
+                        var formattedDate3 = results.closeDate.getDate() + "/" + (results.closeDate.getMonth() + 1) + "/" + results.closeDate.getFullYear();
+                        %>
+                        <h2 style="color: green;">This Ticket was Closed on <%= formattedDate3 %> </h2>
+                   <% } %>
+            <% } %>
+            <script>
+                const today = new Date();
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                const displayDate = today.toLocaleDateString('en-US', options);
+                document.getElementById('currentDate').innerText = displayDate;
+            </script>
+        </div>
+    </div>
+    <%- include("./partials/footer.ejs")  %>
+</body>
+</html>

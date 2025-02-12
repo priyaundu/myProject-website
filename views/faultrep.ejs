@@ -1,0 +1,128 @@
+<html lang="en">
+    <%- include("./partials/header.ejs")  %>
+<body>
+    <header>
+      <a href="#"><img src="public/img/logo1.jpg" alt="company Logo" class="logo"></a>
+      <%- include('./partials/navprivate.ejs') %>
+    </header>
+    <div class="container">
+        <div class="section2">
+            <%- include('./partials/menu.ejs') %>
+        </div>
+        <div class="section3">
+            <h1>Fault Report</h1>
+            <form action="/fault" method="post">
+                <label for="customerID">Customer ID:</label>
+                <input type="text" id="customerID" name="customerID" required placeholder="Customer ID"><br><br>
+                <label for="productID">Product ID:</label>
+                <input type="text" id="productID" name="productID" required placeholder="Product ID"><br><br>
+                <button type="submit">Create Trouble Ticket</button>
+            </form>
+
+            <% if (results) 
+            { 
+                var formattedDate = results.dateOfPurchase.getDate() + "/" + (results.dateOfPurchase.getMonth() + 1) + "/" + results.dateOfPurchase.getFullYear(); 
+                
+                var warrantyDate = results.dateOfPurchase.getDate() + "/" + (results.dateOfPurchase.getMonth() + 1) + "/" + (results.dateOfPurchase.getFullYear() + results.warranty); %>
+
+                <h2>Customer Details:</h2>
+                <table class="table">
+                    <tbody>
+                      <tr>
+                        <td><strong>Name</strong></td>
+                        <td><%= results.name %></td>
+                      </tr>
+                      <tr>
+                        <td><strong>Address</strong></td>
+                        <td><%= results.address %></td>
+                      </tr>
+                      <tr>
+                        <td><strong>Phone No</strong></td>
+                        <td><%= results.phone %></td>
+                      </tr>
+                      <tr>
+                        <td><strong>email</strong></td>
+                        <td><%= results.email %></td>
+                      </tr>
+                    </tbody>
+                </table>  
+                
+               
+                <h2>Product Details:</h2>
+                <table class="table">
+                    <thead>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><strong>Customer ID</strong></td>
+                        <td><%= results.customerId %></td>
+                      </tr>
+                      <tr>
+                        <td><strong>Product ID</strong></td>
+                        <td><%= results.id %></td>
+                      </tr>
+                      <tr>
+                        <td><strong>Date of Purchase</strong></td>
+                        <td><%= formattedDate %></td>
+                      </tr>
+                      <tr>
+                        <td><strong>Product Type</strong></td>
+                        <td><%= results.productType %></td>
+                      </tr>
+                      <tr>
+                        <td><strong>Brand</strong></td>
+                        <td><%= results.brand %></td>
+                      </tr>
+                      <tr>
+                        <td><strong>Model</strong></td>
+                        <td><%= results.model %></td>
+                      </tr>
+                      <tr>
+                        <td><strong>Warranty Period</strong></td>
+                        <td><%= results.warranty %> Year</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Serial Number</strong></td>
+                        <td><%= results.serialNumber %></td>
+                      </tr>
+                      <tr>
+                        <td><strong>Warranty Expiry Date</strong></td>
+                        <td style="color: red;"><%= warrantyDate %></td>
+                      </tr>
+                    </tbody>
+                </table> 
+
+                <h2>Create Trouble Ticket</h2>
+                <p>Fault Report Date: <span id="currentDate"></span></p>
+                <form action="/ticket" method="post">
+                    <input type="hidden" name="customerId" value="<%= results.customerId %>"> 
+                    <input type="hidden" name="productId" value="<%= results.id %>">
+                    <input type="hidden" id="reportDate" name="reportDate" value="">
+                    <input type="hidden" name="status" value="pending">
+                    <label for="description">Description of Fault:</label>
+                    <br>
+                    <textarea id="description" name="description" rows="4" cols="50" required></textarea><br><br>
+                    <button type="submit">Submit Ticket</button>
+                </form>
+                <% } %>
+            
+                <script>
+                    // Get the current date and time
+                    const today = new Date();
+                    
+                    // Format the date as "YYYY-MM-DD"
+                    const formattedDate = today.toISOString().split('T')[0];
+                    
+                    // Set the value of the "reportDate" input field
+                    document.getElementById('reportDate').value = formattedDate;
+                    
+                    // Display the formatted date
+                    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                    const displayDate = today.toLocaleDateString('en-US', options);
+                    document.getElementById('currentDate').innerText = displayDate;
+                </script>
+        </div>
+    </div>
+    <%- include("./partials/footer.ejs")  %>
+</body>
+</html>
